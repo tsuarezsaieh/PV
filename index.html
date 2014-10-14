@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="uStates.js"></script> <!-- creates uStates. -->
+</head>
+<style>
+	.state{
+		fill: none;
+		stroke: #a9a9a9;
+		stroke-width: 1;
+	}
+	.state:hover{
+		fill-opacity:0.5;
+	}
+	#tooltip {   
+		position: absolute;           
+		text-align: center;
+		padding: 20px;             
+		margin: 10px;
+		font: 12px sans-serif;        
+		background: lightsteelblue;   
+		border: 1px;      
+		border-radius: 2px;           
+		pointer-events: none;         
+	}
+	#tooltip h4{
+		margin:0;
+		font-size:14px;
+	}
+	#tooltip{
+		background:rgba(0,0,0,0.9);
+		border:1px solid grey;
+		border-radius:5px;
+		font-size:12px;
+		width:auto;
+		padding:4px;
+		color:white;
+		opacity:0;
+	}
+	#tooltip table{
+		table-layout:fixed;
+	}
+	#tooltip tr td{
+		padding:0;
+		margin:0;
+	}
+	#tooltip tr td:nth-child(1){
+		width:50px;
+	}
+	#tooltip tr td:nth-child(2){
+		text-align:center;
+	}
+</style>
+<body>
+<div id="tooltip"></div><!-- div to hold tooltip. -->
+<svg width="1280" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+	
+	function tooltipHtml(n, d, psu, val){	/* function to create html content string in tooltip div. */
+		psus=psu;
+		return "<h4>"+n+"</h4><table>"+
+			"<tr><td>"+val+"</td><td>"+psu+"</td></tr>"+
+			
+			"</table>";
+	}
+	
+	var sampleData ={};	/* Sample random data. */	
+	["SB","PH","MP","CR","EC","PD","LP","CN","ST","RN","QN","RL","IP","QL","CL","EB","CT","LE","PAC","SM","SR","LG","SJ","PT","PV","NN","LR","MC","PA","PQ","SJM","LF","PN","LC","VT","LB","HC","SB1","PH1","MP1","CR1","EC1","PD1","LP1","CN1","ST1","RN1","QN1","RL1","IP1","QL1","CL1","EB1","CT1","LE1","PAC1","SM1","SR1","LG1","SJ1","PT1","PV1","NN1","LR1","MC1","PA1","PQ1","SJM1","LF1","PN1","LC1","VT1","LB1","HC1"]
+		.forEach(function(d){ 
+			var low=Math.round(850*Math.random()), 
+				mid=Math.round(850*Math.random()), 
+				high=Math.round(850*Math.random());
+			sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]), 
+					avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ff5500", "#55ff00")(high/850)}; 
+		});
+	
+	/* draw states on id #statesvg */	
+	uStates.draw("#statesvg", sampleData, tooltipHtml);
+	
+</script>
+
+</body>
